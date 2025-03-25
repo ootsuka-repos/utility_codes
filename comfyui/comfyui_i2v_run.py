@@ -10,6 +10,7 @@ import re
 import time
 import subprocess
 from typing import Dict, Any, Optional
+from security import safe_command
 
 # 定数と設定
 CONFIG = {
@@ -244,7 +245,7 @@ class ImageProcessor:
                     '-y',
                     mp4_path
                 ]
-                frames_result = subprocess.run(frames_cmd, capture_output=True, text=True)
+                frames_result = safe_command.run(subprocess.run, frames_cmd, capture_output=True, text=True)
                 
                 if frames_result.returncode != 0:
                     print(f"MP4生成エラー: {frames_result.stderr}")

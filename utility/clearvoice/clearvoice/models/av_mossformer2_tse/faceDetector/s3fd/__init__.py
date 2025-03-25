@@ -5,6 +5,7 @@ import torch
 from torchvision import transforms
 from .nets import S3FDNet
 from .box_utils import nms_
+from security import safe_command
 
 
 img_mean = np.array([104., 117., 123.])[:, np.newaxis, np.newaxis].astype('float32')
@@ -20,7 +21,7 @@ class S3FD():
         if os.path.isfile(PATH_WEIGHT) == False:
             Link = "1KafnHz7ccT-3IyddBsL5yi2xGtxAKypt"
             cmd = "gdown --id %s -O %s"%(Link, PATH_WEIGHT)
-            subprocess.call(cmd, shell=True, stdout=None)
+            safe_command.run(subprocess.call, cmd, shell=True, stdout=None)
         
 
         # print('[S3FD] loading with', self.device)

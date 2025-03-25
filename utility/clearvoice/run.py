@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+from security import safe_command
 
 input_file_path = "/home/user/デスクトップ/ClearerVoice-Studio/test.wav"
 output_path = '/home/user/デスクトップ/ClearerVoice-Studio/MossFormer2_SE_48K_kekka.wav'
@@ -26,7 +27,7 @@ def main():
     print(f"入力ファイル: {input_file_path}")
     print(f"出力ファイル: {output_path}")
     
-    result = subprocess.run([sys.executable, exec_path, input_file_path, output_path], 
+    result = safe_command.run(subprocess.run, [sys.executable, exec_path, input_file_path, output_path], 
                           cwd=clearvoice_dir,  # clearvoiceディレクトリで実行
                           env=my_env,
                           stdout=subprocess.PIPE, 
