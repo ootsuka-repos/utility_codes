@@ -3,6 +3,7 @@
 import os
 import subprocess
 import glob
+from security import safe_command
 
 # 対象ディレクトリ
 video_dir = "/home/user/ドキュメント/data"
@@ -33,7 +34,7 @@ for video in video_files:
             video
         ]
         
-        result = subprocess.run(cmd_fps, capture_output=True, text=True)
+        result = safe_command.run(subprocess.run, cmd_fps, capture_output=True, text=True)
         fps_str = result.stdout.strip()
         
         # 分数形式のフレームレートを計算（例：24000/1001）
@@ -51,7 +52,7 @@ for video in video_files:
             video
         ]
         
-        result = subprocess.run(cmd_duration, capture_output=True, text=True)
+        result = safe_command.run(subprocess.run, cmd_duration, capture_output=True, text=True)
         duration = float(result.stdout.strip())
         
         # フレーム数を計算

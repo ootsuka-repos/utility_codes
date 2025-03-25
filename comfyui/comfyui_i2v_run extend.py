@@ -13,6 +13,7 @@ from typing import Dict, Any, Optional
 
 # last_flame_save.pyから関数をインポート
 from last_flame_save import save_last_frame
+from security import safe_command
 
 # 定数と設定
 CONFIG = {
@@ -248,7 +249,7 @@ class ImageProcessor:
                     '-y',
                     mp4_path
                 ]
-                frames_result = subprocess.run(frames_cmd, capture_output=True, text=True)
+                frames_result = safe_command.run(subprocess.run, frames_cmd, capture_output=True, text=True)
                 
                 if frames_result.returncode != 0:
                     print(f"MP4生成エラー: {frames_result.stderr}")
@@ -291,7 +292,7 @@ class ImageProcessor:
                 output_path
             ]
             
-            concat_result = subprocess.run(concat_cmd, capture_output=True, text=True)
+            concat_result = safe_command.run(subprocess.run, concat_cmd, capture_output=True, text=True)
             
             # 一時ファイルを削除
             if os.path.exists(temp_list_path):
