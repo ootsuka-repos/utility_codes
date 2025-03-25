@@ -2,6 +2,7 @@ import streamlit as st
 from clearvoice import ClearVoice
 import os
 import tempfile
+from security import safe_command
 
 st.set_page_config(page_title="ClearerVoice Studio", layout="wide")
 temp_dir = 'temp'
@@ -79,7 +80,7 @@ def main():
                         # Extract audio
                         import subprocess
                         cmd = f"ffmpeg -i {input_path} -vn -acodec pcm_s16le -ar 16000 -ac 1 {audio_path}"
-                        subprocess.call(cmd, shell=True)
+                        safe_command.run(subprocess.call, cmd, shell=True)
                         
                         input_path = audio_path
                     
