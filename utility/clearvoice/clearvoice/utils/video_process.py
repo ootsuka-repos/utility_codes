@@ -19,6 +19,7 @@ from models.av_mossformer2_tse.faceDetector.s3fd import S3FD
 
 from .decode import decode_one_audio_AV_MossFormer2_TSE_16K
 from security import safe_command
+import fickling
 
 
 
@@ -115,7 +116,7 @@ def main(video_args, args):
         pickle.dump(vidTracks, fil)
     sys.stderr.write(time.strftime("%Y-%m-%d %H:%M:%S") + " Face Crop and saved in %s tracks \r\n" %video_args.pycropPath)
     fil = open(savePath, 'rb')
-    vidTracks = pickle.load(fil)
+    vidTracks = fickling.load(fil)
     fil.close()
 
     # AVSE
