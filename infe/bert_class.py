@@ -6,7 +6,7 @@ import time
 
 def main():
     # 入出力ファイルの設定
-    input_file = "F:\\galgame_dataset_filtered_modified.csv"
+    input_file = r"F:\all_dialogues.csv"
     output_dir = os.path.dirname(input_file)
     timestamp = time.strftime("%Y%m%d_%H%M%S")
     output_file = os.path.join(output_dir, f"galgame_dataset_classified_{timestamp}.csv")
@@ -38,13 +38,13 @@ def main():
     df['bert_label'] = ''
     
     # バッチサイズの設定
-    batch_size = 512
+    batch_size = 2000
     total_rows = len(df)
     
     print("テキスト分類を実行しています...")
     for i in range(0, total_rows, batch_size):
         batch_end = min(i + batch_size, total_rows)
-        if i % 100 == 0:
+        if i % 1 == 0:
             print(f"処理中: {i}/{total_rows} ({i/total_rows*100:.1f}%)")
         
         # バッチのテキストを取得

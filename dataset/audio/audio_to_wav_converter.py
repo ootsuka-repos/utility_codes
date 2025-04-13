@@ -4,7 +4,7 @@ import multiprocessing
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # 対象とする音声ファイルの拡張子
-supported_extensions = ['.mp3', '.ogg', '.flac', '.aac', '.m4a', '.wma', '.alac', '.aiff', '.opus']
+supported_extensions = ['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a', '.wma', '.alac', '.aiff', '.opus']
 
 def convert_audio(file_path):
     try:
@@ -20,8 +20,7 @@ def convert_audio(file_path):
             "-loglevel", "error",    # エラーのみ出力
             "-i", file_path,         # 入力ファイル
             "-ar", "48000",          # サンプルレート指定
-            "-threads", "52",         # スレッド数制限（並列処理効率化のため）
-            "-acodec", "pcm_s16le",  # コーデック指定
+            "-threads", "52",
             temp_output_file         # 一時出力ファイル
         ]
         
@@ -45,7 +44,7 @@ def process_batch(file_batch):
     return results
 
 def main():
-    root_dir = r"F:\Galgame_Dataset"
+    root_dir = r"F:\Data"
     files_to_convert = []
 
     # 変換対象ファイルのリストを一度に構築
@@ -59,11 +58,10 @@ def main():
     print(f"変換対象ファイル数: {total_files}")
     
     # CPUコア数に基づいてワーカー数を決定（少し余裕を持たせる）
-    cpu_count = multiprocessing.cpu_count()
-    workers = 46  # 最小4、最大40、CPUコア数-2
+    workers = 26
     
     # バッチサイズを調整（小さなファイルが多い場合に効果的）
-    batch_size = 100
+    batch_size = 20
     batches = [files_to_convert[i:i+batch_size] for i in range(0, total_files, batch_size)]
     
     completed = 0
@@ -75,10 +73,7 @@ def main():
         for future in as_completed(futures):
             results = future.result()
             completed += len(results)
-            
-            # 進捗表示（頻繁な出力は避ける）
-            if completed % 10 == 0 or completed == total_files:
-                print(f"進捗: {completed}/{total_files} ({(completed/total_files*100):.1f}%)")
+            print(f"進捗: {completed}/{total_files} ({(completed/total_files*100):.1f}%)")
 
 if __name__ == "__main__":
     main()
